@@ -1,7 +1,9 @@
+const body = document.querySelector('body');
+const container = document.querySelector('#container');
+
 function paint(e) {
-    if(this.classList.contains('paintedSlot'))
-        return;
-    this.classList.toggle('paintedSlot');
+    let val = Math.floor(Math.random() * 360);
+    this.style.backgroundColor = `hsl(${val}, 100%, 50%)`;
 }
 
 function clear() {
@@ -25,13 +27,18 @@ function createGrid(rows, columns) {
 
 function clearAndConstructNewGrid() {
     clear();
-    let dimensions = window.prompt('Input the number of squares per each side for a new grid. Total must be less than 100. Separate the numbers by a space (Row Column)', '16 16');
-    dimensions = dimensions.split(' ');
-    createGrid(parseInt(dimensions[0]), parseInt(dimensions[1]));
-}
+    let dimensions, rows, col;
+    do {
+        dimensions = window.prompt('Input the number of squares per each side for a new grid. Each side must be no more than 100. Separate the numbers by a space (Row Column)', '16 16');
+        dimensions = dimensions.split(' ');
+        rows = parseInt(dimensions[0]);
+        col = parseInt(dimensions[1]);
+    } while (rows > 100 || col > 100 || rows < 0 || col < 0)
 
-const body = document.querySelector('body');
-const container = document.querySelector('#container');
+    createGrid(rows, col);
+    container.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+    container.style.gridTemplateColumns = `repeat(${col}, 1fr)`;
+}
 
 // Initialize grid
 createGrid(16, 16);
